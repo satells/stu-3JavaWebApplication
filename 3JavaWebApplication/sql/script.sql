@@ -18,14 +18,11 @@ primary key (CODE)
  
 -- Insert data: ---------------------------------------------------------------
  
-insert into user_account (USER_NAME, GENDER, PASSWORD)
-values ('tom', 'M', 'tom001');
+insert into user_account (USER_NAME, GENDER, PASSWORD) values ('tom', 'M', 'tom001');
  
-insert into user_account (USER_NAME, GENDER, PASSWORD)
-values ('jerry', 'M', 'jerry001');
+insert into user_account (USER_NAME, GENDER, PASSWORD) values ('jerry', 'M', 'jerry001');
+insert into user_account (USER_NAME, GENDER, PASSWORD) values ('mauro', 'M', '123');
  
-insert into product (CODE, NAME, PRICE)
-values ('P001', 'Java Core', 100);
+insert into product (CODE, NAME, PRICE) values ('P001', 'Java Core', 100);
  
-insert into product (CODE, NAME, PRICE)
-values ('P002', 'C# Core', 90);
+insert into product (CODE, NAME, PRICE) values ('P002', 'C# Core', 90);
