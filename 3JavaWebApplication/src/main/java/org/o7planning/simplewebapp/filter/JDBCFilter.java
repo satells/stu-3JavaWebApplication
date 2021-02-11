@@ -32,7 +32,7 @@ public class JDBCFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 	HttpServletRequest req = (HttpServletRequest) request;
-
+	System.out.println(">>>>>>>JDBCFilter: " + Thread.currentThread().getName());
 	// Only open connections for the special requests.
 	// (For example, the path to the servlet, JSP, ..)
 	//
@@ -58,7 +58,7 @@ public class JDBCFilter implements Filter {
 		chain.doFilter(request, response);
 
 		// Invoke the commit() method to complete the transaction with the DB.
-		conn.commit();
+//		conn.commit();
 	    } catch (Exception e) {
 		e.printStackTrace();
 		ConnectionUtils.rollbackQuietly(conn);

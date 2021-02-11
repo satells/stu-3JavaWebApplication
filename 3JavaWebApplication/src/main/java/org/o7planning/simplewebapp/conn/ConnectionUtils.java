@@ -20,7 +20,7 @@ public class ConnectionUtils {
 
     public static void closeQuietly(Connection conn) {
 	try {
-	    conn.close();
+	    // conn.close();
 	} catch (Exception e) {
 	}
     }

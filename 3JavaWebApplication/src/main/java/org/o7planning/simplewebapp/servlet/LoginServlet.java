@@ -23,12 +23,14 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	System.out.println("@@@@@@@@@@LoginServlet: " + Thread.currentThread().getName());
 	RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/loginView.jsp");
 	dispatcher.forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	System.out.println("@@@@@@@@@@LoginServlet: " + Thread.currentThread().getName());
 	String userName = request.getParameter("userName");
 	String password = request.getParameter("password");
 	String rememberMeStr = request.getParameter("rememberMe");

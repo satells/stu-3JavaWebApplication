@@ -20,6 +20,7 @@ public class UserInfoServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	System.out.println("@@@@@@@@@@UserInfoServlet: " + Thread.currentThread().getName());
 	HttpSession session = request.getSession();
 
 	// Check User has logged on

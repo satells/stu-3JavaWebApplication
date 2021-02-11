@@ -25,18 +25,20 @@ public class SQLServerConnUtils_JTDS {
 	return getSQLServerConnection_JTDS(hostName, sqlInstanceName, database, userName, password);
     }
 
-    // Connect to SQLServer, using JTDS library
-    private static Connection getSQLServerConnection_JTDS(String hostName, //
-	    String sqlInstanceName, String database, String userName, String password) throws ClassNotFoundException, SQLException {
+    static Connection conn = null;
 
-	Class.forName("net.sourceforge.jtds.jdbc.Driver");
+    // Connect to SQLServer, using JTDS library
+    private static Connection getSQLServerConnection_JTDS(String hostName, String sqlInstanceName, String database, String userName, String password) throws ClassNotFoundException, SQLException {
 
 	// Example:
 	// jdbc:jtds:sqlserver://localhost:1433/simplehr;instance=SQLEXPRESS
-	String connectionURL = "jdbc:jtds:sqlserver://" + hostName + ":1433/" //
-		+ database + ";instance=" + sqlInstanceName;
 
-	Connection conn = DriverManager.getConnection(connectionURL, userName, password);
+	if (conn == null) {
+	    Class.forName("net.sourceforge.jtds.jdbc.Driver");
+	    String connectionURL = "jdbc:jtds:sqlserver://" + hostName + ":1433/" + database + ";instance=" + sqlInstanceName;
+	    conn = DriverManager.getConnection(connectionURL, userName, password);
+	}
+
 	return conn;
     }
 

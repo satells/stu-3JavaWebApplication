@@ -16,7 +16,7 @@ public class HomeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+	System.out.println("@@@@@@@@@@HomeServlet: " + Thread.currentThread().getName());
 	RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/homeView.jsp");
 	dispatcher.forward(request, response);
 

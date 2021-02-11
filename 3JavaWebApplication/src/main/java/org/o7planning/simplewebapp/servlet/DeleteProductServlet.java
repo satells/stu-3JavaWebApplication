@@ -17,41 +17,42 @@ import org.o7planning.simplewebapp.utils.MyUtils;
 @WebServlet(urlPatterns = "/deleteProduct")
 public class DeleteProductServlet extends HttpServlet {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn = MyUtils.getStoredConnection(request);
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	System.out.println("@@@@@@@@@@DeleteProductServlet: " + Thread.currentThread().getName());
+	Connection conn = MyUtils.getStoredConnection(request);
 
-		String code = (String) request.getParameter("code");
+	String code = (String) request.getParameter("code");
 
-		String errorString = null;
+	String errorString = null;
 
-		try {
-			DBUtils.deleteProduct(conn, code);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			errorString = e.getMessage();
-		}
-
-		// If has an error, redirecte to the error page.
-		if (errorString != null) {
-			// Store the information in the request attribute, before forward to views.
-			request.setAttribute("errorString", errorString);
-			//
-			RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/WEB-INF/views/deleteProductErrorView.jsp");
-			dispatcher.forward(request, response);
-		}
-		// If everything nice.
-		// Redirect to the product listing page.
-		else {
-			response.sendRedirect(request.getContextPath() + "/productList");
-		}
-
+	try {
+	    DBUtils.deleteProduct(conn, code);
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	    errorString = e.getMessage();
 	}
 
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	// If has an error, redirecte to the error page.
+	if (errorString != null) {
+	    // Store the information in the request attribute, before forward to views.
+	    request.setAttribute("errorString", errorString);
+	    //
+	    RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/WEB-INF/views/deleteProductErrorView.jsp");
+	    dispatcher.forward(request, response);
 	}
+	// If everything nice.
+	// Redirect to the product listing page.
+	else {
+	    response.sendRedirect(request.getContextPath() + "/productList");
+	}
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    }
 
 }

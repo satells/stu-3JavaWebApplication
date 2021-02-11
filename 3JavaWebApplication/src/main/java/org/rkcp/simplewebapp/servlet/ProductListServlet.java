@@ -19,33 +19,34 @@ import org.o7planning.simplewebapp.utils.MyUtils;
 @WebServlet(urlPatterns = "/productList")
 public class ProductListServlet extends HttpServlet {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn = MyUtils.getStoredConnection(request);
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	System.out.println("@@@@@@@@@@ProductListServlet: " + Thread.currentThread().getName());
+	Connection conn = MyUtils.getStoredConnection(request);
 
-		String errorString = null;
-		List<Product> list = null;
-		try {
-			list = DBUtils.queryProduct(conn);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			errorString = e.getMessage();
-		}
-
-		// Store info in request attribute, before forward to views
-		request.setAttribute("errorString", errorString);
-		request.setAttribute("productList", list);
-
-		// Forward to /WEB-INF/views/productListView.jsp
-		RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/WEB-INF/views/productListView.jsp");
-		dispatcher.forward(request, response);
+	String errorString = null;
+	List<Product> list = null;
+	try {
+	    list = DBUtils.queryProduct(conn);
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	    errorString = e.getMessage();
 	}
 
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
+	// Store info in request attribute, before forward to views
+	request.setAttribute("errorString", errorString);
+	request.setAttribute("productList", list);
+
+	// Forward to /WEB-INF/views/productListView.jsp
+	RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/WEB-INF/views/productListView.jsp");
+	dispatcher.forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	doGet(request, response);
+    }
 
 }

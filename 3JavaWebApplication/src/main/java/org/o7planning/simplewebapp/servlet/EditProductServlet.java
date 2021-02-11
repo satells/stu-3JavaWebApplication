@@ -18,78 +18,85 @@ import org.o7planning.simplewebapp.utils.MyUtils;
 @WebServlet(urlPatterns = "/editProduct")
 public class EditProductServlet extends HttpServlet {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn = MyUtils.getStoredConnection(request);
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	super.service(req, resp);
+    }
 
-		String code = (String) request.getParameter("code");
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	Connection conn = MyUtils.getStoredConnection(request);
+	System.out.println("@@@@@@@@@@EditProductServlet: " + Thread.currentThread().getName());
 
-		Product product = null;
+	String code = (String) request.getParameter("code");
 
-		String errorString = null;
+	Product product = null;
 
-		try {
-			product = DBUtils.findProduct(conn, code);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			errorString = e.getMessage();
-		}
+	String errorString = null;
 
-		// If no error.
-		// The product does not exist to edit.
-		// Redirect to productList page.
-		if (errorString != null && product == null) {
-			response.sendRedirect(request.getServletPath() + "/productList");
-			return;
-		}
-
-		// Store errorString in request attribute, before forward to views.
-		request.setAttribute("errorString", errorString);
-		request.setAttribute("product", product);
-
-		RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/WEB-INF/views/editProductView.jsp");
-		dispatcher.forward(request, response);
-
+	try {
+	    product = DBUtils.findProduct(conn, code);
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	    errorString = e.getMessage();
 	}
 
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn = MyUtils.getStoredConnection(request);
-
-		String code = (String) request.getParameter("code");
-		String name = (String) request.getParameter("name");
-		String priceStr = (String) request.getParameter("price");
-		float price = 0;
-		try {
-			price = Float.parseFloat(priceStr);
-		} catch (Exception e) {
-		}
-		Product product = new Product(code, name, price);
-
-		String errorString = null;
-
-		try {
-			DBUtils.updateProduct(conn, product);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			errorString = e.getMessage();
-		}
-		// Store infomation to request attribute, before forward to views.
-		request.setAttribute("errorString", errorString);
-		request.setAttribute("product", product);
-
-		// If error, forward to Edit page.
-		if (errorString != null) {
-			RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/WEB-INF/views/editProductView.jsp");
-			dispatcher.forward(request, response);
-		}
-		// If everything nice.
-		// Redirect to the product listing page.
-		else {
-			response.sendRedirect(request.getContextPath() + "/productList");
-		}
-
+	// If no error.
+	// The product does not exist to edit.
+	// Redirect to productList page.
+	if (errorString != null && product == null) {
+	    response.sendRedirect(request.getServletPath() + "/productList");
+	    return;
 	}
+
+	// Store errorString in request attribute, before forward to views.
+	request.setAttribute("errorString", errorString);
+	request.setAttribute("product", product);
+
+	RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/WEB-INF/views/editProductView.jsp");
+	dispatcher.forward(request, response);
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	System.out.println("@@@@@@@@@@EditProductServlet: " + Thread.currentThread().getName());
+	Connection conn = MyUtils.getStoredConnection(request);
+
+	String code = (String) request.getParameter("code");
+	String name = (String) request.getParameter("name");
+	String priceStr = (String) request.getParameter("price");
+	float price = 0;
+	try {
+	    price = Float.parseFloat(priceStr);
+	} catch (Exception e) {
+	}
+	Product product = new Product(code, name, price);
+
+	String errorString = null;
+
+	try {
+	    DBUtils.updateProduct(conn, product);
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	    errorString = e.getMessage();
+	}
+	// Store infomation to request attribute, before forward to views.
+	request.setAttribute("errorString", errorString);
+	request.setAttribute("product", product);
+
+	// If error, forward to Edit page.
+	if (errorString != null) {
+	    RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/WEB-INF/views/editProductView.jsp");
+	    dispatcher.forward(request, response);
+	}
+	// If everything nice.
+	// Redirect to the product listing page.
+	else {
+	    response.sendRedirect(request.getContextPath() + "/productList");
+	}
+
+    }
 }
